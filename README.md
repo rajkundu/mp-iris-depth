@@ -1,6 +1,9 @@
 # MP Iris Depth Demo
 Estimating depth using [MediaPipe](https://github.com/google-ai-edge/mediapipe) iris tracking
 
+## Live Demo
+Visit live Netlify deploy at https://iris-depth-demo.netlify.app
+
 ### Resources/References
 - https://medium.com/@susanne.thierfelder/create-your-own-depth-measuring-tool-with-mediapipe-facemesh-in-javascript-ae90abae2362
 - https://stackoverflow.com/questions/6714069/finding-distance-from-camera-to-object-of-known-size
