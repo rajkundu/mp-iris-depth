@@ -149,6 +149,10 @@ function calculateIrisSizePx(imgW, imgH, ptA, ptB, ptC, ptD) {
 let lastVideoTime = -1;
 let results = undefined;
 const drawingUtils = new DrawingUtils(canvasCtx);
+
+let frameCount = 0;
+let lastTime = performance.now();
+
 async function predictWebcam() {
   const ratio = video.videoHeight / video.videoWidth;
   video.style.width = videoWidth + "px";
@@ -239,7 +243,7 @@ async function predictWebcam() {
         focalLengthPx = irisSizePx * calibrationDistanceMm / IRIS_DIAMETER_MM;
         calibrateFlag = false;
       }
-      
+
       let currentDepthMm = focalLengthPx * IRIS_DIAMETER_MM / irisSizePx;
 
       document.getElementById("irisWidthPx").innerText =
@@ -252,7 +256,7 @@ async function predictWebcam() {
         "Depth: " + (currentDepthMm / 10).toFixed(1) + " cm";
       document.getElementById("calibrationSizePx").innerText =
         "Iris size @ calibration: " + (focalLengthPx * IRIS_DIAMETER_MM / calibrationDistanceMm).toFixed(2) + " px";
-      
+
       if (isNaN(focalLengthPx)) {
         document.body.style.backgroundColor = null;
       } else {
@@ -261,6 +265,25 @@ async function predictWebcam() {
         } else {
           document.body.style.backgroundColor = null;
         }
+      }
+
+      // Increment frame count
+      frameCount++;
+
+      // Update FPS calculation every second
+      const currentTime = performance.now();
+      if (currentTime - lastTime >= 2000) {
+
+        // Update rolling average FPS
+        const avgFps = frameCount / ((currentTime - lastTime) / 1000.0);
+
+        // Display averaged FPS on the webpage
+        document.getElementById("fpsDisplay").innerText =
+          "Avg. FPS: " + avgFps.toFixed(2);
+
+        // Reset metrics
+        frameCount = 0;
+        lastTime = currentTime;
       }
     }
   }
